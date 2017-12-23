@@ -1,0 +1,46 @@
+#!/bin/bash
+set -xeuo pipefail
+
+main() {
+	create_diff
+	build_scratch_tags
+	build_os_tags
+}
+
+create_diff() {
+	docker run --rm -v `pwd`:/work -w /work \
+		python:2.7.14-alpine3.7 ./diff_last_two_tags.py
+}
+
+build_scratch_tags() {
+	load_lines "scratch_tags.txt"
+	for TAG in "${LINES[@]}"; do
+		docker run --rm -v `pwd`:/work -w /work alpine:3.7 \
+			sh -c "wget -qO- https://github.com/pasztorpisti/sql-migrate/releases/download/v${TAG}/sql-migrate-linux-amd64.zip | unzip -qo -"
+		chmod +x sql-migrate
+		docker build -t "${DOCKER_REPO}:${TAG}" .
+	done
+}
+
+
+build_os_tags() {
+	load_lines "os_tags.txt"
+	for LINE in "${LINES[@]}"; do
+		ITEMS=( ${LINE} )
+		TAG="${ITEMS[0]}"
+		DIR="${ITEMS[1]}"
+		CUSTOM_BUILD_SCRIPT="${DIR}/build"
+		if [[ -f "${CUSTOM_BUILD_SCRIPT}" ]]; then
+			"${CUSTOM_BUILD_SCRIPT}"
+		else
+			docker build -t "${DOCKER_REPO}:${TAG}" "${DIR}"
+		fi
+	done
+}
+
+load_lines() {
+	local IFS=$'\n'
+	LINES=( $(cat "$1") )
+}
+
+main

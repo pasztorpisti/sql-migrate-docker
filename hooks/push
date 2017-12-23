@@ -1,0 +1,29 @@
+#!/bin/bash
+set -xeuo pipefail
+
+load_lines() {
+	local IFS=$'\n'
+	LINES=( $(cat "$1") )
+}
+
+load_lines "scratch_tags.txt"
+for TAG in "${LINES[@]}"; do
+	docker push "${DOCKER_REPO}:${TAG}"
+done
+
+load_lines "os_tags.txt"
+for LINE in "${LINES[@]}"; do
+	ITEMS=( ${LINE} )
+	TAG="${ITEMS[0]}"
+	docker push "${DOCKER_REPO}:${TAG}"
+done
+
+load_lines "aliases.txt"
+for LINE in "${LINES[@]}"; do
+	ITEMS=( ${LINE} )
+	ALIAS="${ITEMS[0]}"
+	TAG="${ITEMS[1]}"
+	docker pull "${DOCKER_REPO}:${TAG}"
+	docker tag "${DOCKER_REPO}:${TAG}" "${DOCKER_REPO}:${ALIAS}"
+	docker push "${DOCKER_REPO}:${ALIAS}"
+done
