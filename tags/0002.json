@@ -1,0 +1,29 @@
+{
+    "scratch_tags": [
+        "1.0.0",
+        "1.0.1"
+    ],
+    "os_tags": {
+        "1.0.0-alpine3.6": "1.0.0/alpine3.6",
+        "1.0.0-alpine3.7": "1.0.0/alpine3.7",
+        "1.0.0-debian9": "1.0.0/debian9",
+        "1.0.0-debian9.3": "1.0.0/debian9.3",
+        "1.0.1-alpine3.6": "1.0.1/alpine3.6",
+        "1.0.1-alpine3.7": "1.0.1/alpine3.7",
+        "1.0.1-debian9": "1.0.1/debian9",
+        "1.0.1-debian9.3": "1.0.1/debian9.3"
+    },
+    "aliases": {
+        "latest": "1.0.1",
+        "1.0.0-alpine": "1.0.0-alpine3.7",
+        "1.0.0-debian": "1.0.0-debian9.3",
+        "latest-alpine3.6": "1.0.1-alpine3.6",
+        "1.0.1-alpine": "1.0.1-alpine3.7",
+        "latest-alpine3.7": "1.0.1-alpine3.7",
+        "latest-alpine": "1.0.1-alpine3.7",
+        "latest-debian9": "1.0.1-debian9",
+        "1.0.1-debian": "1.0.1-debian9.3",
+        "latest-debian9.3": "1.0.1-debian9.3",
+        "latest-debian": "1.0.1-debian9.3"
+    }
+}
